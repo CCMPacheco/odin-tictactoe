@@ -4,21 +4,47 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,700;1,400&family=Schoolbell&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <div class="board">
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
-      <div class="cell"></div>
+    <div class="start modal">
+      <h1>TIC TAC TOE</h1>
+      <input
+        type="text"
+        name="player-one"
+        id="player-one"
+        placeholder="Player One Name"
+      />
+      <input
+        type="text"
+        name="player-one"
+        id="player-two"
+        placeholder="Player Two Name"
+      />
+      <button type="button">START GAME</button>
+    </div>
+    <div class="end modal">
+      <p data-winning-msg>PLAYER ONE WINS!</p>
+      <button type="button">PLAY AGAIN</button>
+    </div>
+    <div class="board" id="board">
+      <div class="cell" data-cell></div>
+      <div class="cell" data-cell></div>
+      <div class="cell" data-cell></div>
+      <div class="cell" data-cell></div>
+      <div class="cell" data-cell></div>
+      <div class="cell" data-cell></div>
+      <div class="cell" data-cell></div>
+      <div class="cell" data-cell></div>
+      <div class="cell" data-cell></div>
     </div>
   </body>
 </html>
