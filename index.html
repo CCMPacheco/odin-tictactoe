@@ -15,7 +15,11 @@
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    <div class="start modal">
+    <div class="names">
+      <div data-player-one>Player One</div>
+      <div data-player-two>Player Two</div>
+    </div>
+    <div class="start modal" id="start-screen">
       <h1>TIC TAC TOE</h1>
       <input
         type="text"
@@ -29,11 +33,11 @@
         id="player-two"
         placeholder="Player Two Name"
       />
-      <button type="button">START GAME</button>
+      <button type="button" data-btn>START GAME</button>
     </div>
-    <div class="end modal">
+    <div class="end modal" id="end-screen">
       <p data-winning-msg>PLAYER ONE WINS!</p>
-      <button type="button">PLAY AGAIN</button>
+      <button type="button" data-btn>PLAY AGAIN</button>
     </div>
     <div class="board" id="board">
       <div class="cell" data-cell></div>

@@ -132,10 +132,6 @@ body {
   z-index: 9999;
 }
 
-.show {
-  display: flex;
-}
-
 .start h1,
 .end p {
   font-size: var(--fs-large);
@@ -161,4 +157,29 @@ body {
   margin-top: 4rem;
   background-color: var(--color-x-mark);
   cursor: pointer;
+}
+
+.names {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-family: var(--ff-schoolbell);
+  font-size: var(--fs-large);
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  text-shadow: 2px 2px var(--color-dark);
+}
+
+.names div:first-child {
+  color: var(--color-x-mark);
+}
+
+.names div:last-child {
+  color: var(--color-o-mark);
+}
+
+.show {
+  display: flex;
 }
