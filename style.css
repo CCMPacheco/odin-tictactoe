@@ -190,6 +190,16 @@ body {
   background-color: var(--color-o-mark);
 }
 
+button {
+  opacity: 1;
+  transition: 250ms ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
 .show {
   display: flex;
 }
