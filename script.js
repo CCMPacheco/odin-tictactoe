@@ -59,7 +59,7 @@ const displayController = (() => {
     if (playerTwo.name) {
       twoDisplayName.textContent = playerTwo.name.toUpperCase();
     } else if (aiOpponent[0]) {
-      twoDisplayName.textContent = "CPU";
+      twoDisplayName.textContent = "BOT";
     } else {
       twoDisplayName.textContent = "PLAYER TWO";
     }
@@ -157,6 +157,7 @@ const gameController = (() => {
       displayController.endScreen.classList.add("show");
     } else {
       swapTurn();
+      isAiTurn();
       hoverMark();
     }
   };
@@ -189,7 +190,7 @@ const gameController = (() => {
     playerOne.name = displayController.oneDisplayName.textContent;
     playerOne.ai = false;
     playerTwo.name = displayController.aiOpponent[0]
-      ? "CPU"
+      ? "BOT"
       : displayController.twoDisplayName.textContent;
     playerTwo.ai = displayController.aiOpponent[0];
 
@@ -218,6 +219,17 @@ const gameController = (() => {
     return gameBoard.boardState.every((cell) => {
       return cell !== "";
     });
+  };
+
+  const isAiTurn = () => {
+    if (xTurn || !playerTwo.ai) {
+      return;
+    }
+    if (!xTurn && playerTwo.ai) {
+      //minimax algorithm
+      //swap turns
+      console.log("CPU MOVES");
+    }
   };
 
   return { startGame };
