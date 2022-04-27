@@ -159,6 +159,10 @@ body {
   cursor: pointer;
 }
 
+.start p {
+  font-size: var(--fs-regular);
+}
+
 .names {
   display: none;
   position: fixed;
@@ -198,6 +202,10 @@ button {
 button:hover {
   transform: scale(1.1);
   opacity: 0.9;
+}
+
+.no-show {
+  display: none;
 }
 
 .show {

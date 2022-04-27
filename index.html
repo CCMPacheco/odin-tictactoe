@@ -21,19 +21,26 @@
     </div>
     <div class="start modal show" id="start-screen">
       <h1>TIC TAC TOE</h1>
+      <p data-against-msg>PLAY AGAINST:</p>
+      <div class="end-btn-container">
+        <button type="button" data-human>HUMAN</button>
+        <button type="button" data-ai>BOT</button>
+      </div>
       <input
         type="text"
         name="player-one"
         id="player-one"
         placeholder="Player One"
+        class="no-show"
       />
       <input
         type="text"
         name="player-one"
         id="player-two"
         placeholder="Player Two"
+        class="no-show"
       />
-      <button type="button" data-start-btn>START GAME</button>
+      <button type="button" data-start-btn class="no-show">START GAME</button>
     </div>
     <div class="end modal" id="end-screen">
       <p data-winning-msg>PLAYER ONE WINS!</p>

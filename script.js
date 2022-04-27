@@ -31,6 +31,7 @@ const gameBoard = (() => {
 })();
 
 const displayController = (() => {
+  const aiOpponent = [false];
   const startBtn = document.querySelector("[data-start-btn]");
   const playerOneName = document.getElementById("player-one");
   const playerTwoName = document.getElementById("player-two");
@@ -41,10 +42,13 @@ const displayController = (() => {
   const endScreen = document.getElementById("end-screen");
   const againBtn = document.querySelector("[data-again-btn]");
   const backBtn = document.querySelector("[data-back-btn]");
+  const humanBtn = document.querySelector("[data-human]");
+  const botBtn = document.querySelector("[data-ai]");
+  const againstMsg = document.querySelector("[data-against-msg]");
 
   const handleStartGame = () => {
     const playerOne = player(playerOneName.value, false);
-    const playerTwo = player(playerTwoName.value, false);
+    const playerTwo = player(playerTwoName.value, aiOpponent[0]);
 
     if (playerOne.name) {
       oneDisplayName.textContent = playerOne.name.toUpperCase();
@@ -54,6 +58,8 @@ const displayController = (() => {
 
     if (playerTwo.name) {
       twoDisplayName.textContent = playerTwo.name.toUpperCase();
+    } else if (aiOpponent[0]) {
+      twoDisplayName.textContent = "CPU";
     } else {
       twoDisplayName.textContent = "PLAYER TWO";
     }
@@ -70,7 +76,32 @@ const displayController = (() => {
     playerTwoName.value = "";
     oneDisplayName.textContent = "";
     twoDisplayName.textContent = "";
+    botBtn.classList.remove("no-show");
+    humanBtn.classList.remove("no-show");
+    againstMsg.classList.remove("no-show");
+    playerOneName.classList.remove("show");
+    playerTwoName.classList.remove("show");
+    startBtn.classList.remove("show");
     startScreen.classList.add("show");
+  };
+
+  const displayHumanMenu = () => {
+    aiOpponent[0] = false;
+    botBtn.classList.add("no-show");
+    humanBtn.classList.add("no-show");
+    againstMsg.classList.add("no-show");
+    playerOneName.classList.add("show");
+    playerTwoName.classList.add("show");
+    startBtn.classList.add("show");
+  };
+
+  const displayBotMenu = () => {
+    aiOpponent[0] = true;
+    botBtn.classList.add("no-show");
+    humanBtn.classList.add("no-show");
+    againstMsg.classList.add("no-show");
+    playerOneName.classList.add("show");
+    startBtn.classList.add("show");
   };
 
   startBtn.addEventListener("click", handleStartGame);
@@ -79,11 +110,17 @@ const displayController = (() => {
 
   backBtn.addEventListener("click", handleBack);
 
-  return { oneDisplayName, twoDisplayName, endScreen };
+  humanBtn.addEventListener("click", displayHumanMenu);
+
+  botBtn.addEventListener("click", displayBotMenu);
+
+  return { oneDisplayName, twoDisplayName, endScreen, aiOpponent };
 })();
 
 const gameController = (() => {
   let xTurn;
+  const playerOne = player("", false);
+  const playerTwo = player("", false);
   const WIN_CONDITION = [
     [0, 1, 2],
     [3, 4, 5],
@@ -148,9 +185,18 @@ const gameController = (() => {
 
   const startGame = () => {
     xTurn = true;
+
+    playerOne.name = displayController.oneDisplayName.textContent;
+    playerOne.ai = false;
+    playerTwo.name = displayController.aiOpponent[0]
+      ? "CPU"
+      : displayController.twoDisplayName.textContent;
+    playerTwo.ai = displayController.aiOpponent[0];
+
     cellElements.forEach((cell) => {
       cell.addEventListener("click", handleClick, { once: true });
     });
+
     gameBoard.resetBoard();
     hoverMark();
   };
@@ -173,8 +219,6 @@ const gameController = (() => {
       return cell !== "";
     });
   };
-
-  startGame();
 
   return { startGame };
 })();
