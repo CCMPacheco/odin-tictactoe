@@ -31,10 +31,55 @@ const gameBoard = (() => {
 })();
 
 const displayController = (() => {
-  //updategameboard
-  //start and restart game
-  //display start screen and end screen
-  //display player names
+  const startBtn = document.querySelector("[data-start-btn]");
+  const playerOneName = document.getElementById("player-one");
+  const playerTwoName = document.getElementById("player-two");
+  const oneDisplayName = document.querySelector("[data-player-one]");
+  const twoDisplayName = document.querySelector("[data-player-two]");
+  const namesDisplay = document.querySelector("[data-names]");
+  const startScreen = document.getElementById("start-screen");
+  const endScreen = document.getElementById("end-screen");
+  const againBtn = document.querySelector("[data-again-btn]");
+  const backBtn = document.querySelector("[data-back-btn]");
+
+  const handleStartGame = () => {
+    const playerOne = player(playerOneName.value, false);
+    const playerTwo = player(playerTwoName.value, false);
+
+    if (playerOne.name) {
+      oneDisplayName.textContent = playerOne.name.toUpperCase();
+    } else {
+      oneDisplayName.textContent = "PLAYER ONE";
+    }
+
+    if (playerTwo.name) {
+      twoDisplayName.textContent = playerTwo.name.toUpperCase();
+    } else {
+      twoDisplayName.textContent = "PLAYER TWO";
+    }
+
+    namesDisplay.classList.add("show");
+    startScreen.classList.remove("show");
+    endScreen.classList.remove("show");
+    gameController.startGame();
+  };
+
+  const handleBack = () => {
+    endScreen.classList.remove("show");
+    playerOneName.value = "";
+    playerTwoName.value = "";
+    oneDisplayName.textContent = "";
+    twoDisplayName.textContent = "";
+    startScreen.classList.add("show");
+  };
+
+  startBtn.addEventListener("click", handleStartGame);
+
+  againBtn.addEventListener("click", handleStartGame);
+
+  backBtn.addEventListener("click", handleBack);
+
+  return { oneDisplayName, twoDisplayName, endScreen };
 })();
 
 const gameController = (() => {
@@ -51,19 +96,28 @@ const gameController = (() => {
   ];
   const board = document.getElementById("board");
   const cellElements = document.querySelectorAll("[data-cell]");
+  const winningMsg = document.querySelector("[data-winning-msg]");
 
   const handleClick = (e) => {
     const cell = e.target;
+
     placeMark(cell, xTurn);
     gameBoard.getBoard();
+
     if (checkWin()) {
       if (xTurn) {
-        console.log("X's WINS!");
+        winningMsg.textContent = `${displayController.oneDisplayName.textContent} WINS!`;
+        winningMsg.style.color = "var(--color-x-mark)";
+        displayController.endScreen.classList.add("show");
       } else {
-        console.log("O's WINS!");
+        winningMsg.textContent = `${displayController.twoDisplayName.textContent} WINS!`;
+        winningMsg.style.color = "var(--color-o-mark)";
+        displayController.endScreen.classList.add("show");
       }
     } else if (checkDraw()) {
-      console.log("GAME DRAW");
+      winningMsg.textContent = `GAME IS A DRAW`;
+      winningMsg.style.color = "var(--color-light)";
+      displayController.endScreen.classList.add("show");
     } else {
       swapTurn();
       hoverMark();
@@ -121,4 +175,6 @@ const gameController = (() => {
   };
 
   startGame();
+
+  return { startGame };
 })();
