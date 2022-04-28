@@ -137,29 +137,12 @@ const gameController = (() => {
 
   const handleClick = (e) => {
     const cell = e.target;
-
+    if (cell.classList.contains("x") || cell.classList.contains("o")) {
+      return;
+    }
     placeMark(cell, xTurn);
     gameBoard.getBoard();
-
-    if (checkWin()) {
-      if (xTurn) {
-        winningMsg.textContent = `${displayController.oneDisplayName.textContent} WINS!`;
-        winningMsg.style.color = "var(--color-x-mark)";
-        displayController.endScreen.classList.add("show");
-      } else {
-        winningMsg.textContent = `${displayController.twoDisplayName.textContent} WINS!`;
-        winningMsg.style.color = "var(--color-o-mark)";
-        displayController.endScreen.classList.add("show");
-      }
-    } else if (checkDraw()) {
-      winningMsg.textContent = `GAME IS A DRAW`;
-      winningMsg.style.color = "var(--color-light)";
-      displayController.endScreen.classList.add("show");
-    } else {
-      swapTurn();
-      isAiTurn();
-      hoverMark();
-    }
+    endGame();
   };
 
   const placeMark = (cell, turn) => {
@@ -226,9 +209,45 @@ const gameController = (() => {
       return;
     }
     if (!xTurn && playerTwo.ai) {
-      //minimax algorithm
-      //swap turns
-      console.log("CPU MOVES");
+      botMove();
+      gameBoard.getBoard();
+      endGame();
+    }
+  };
+
+  const botMove = () => {
+    let available = [];
+    for (let i = 0; i < 9; i++) {
+      if (gameBoard.boardState[i] === "") {
+        available.push(i);
+      }
+    }
+    cellElements[available[randomNumber(available.length)]].classList.add("o");
+  };
+
+  const randomNumber = (number) => {
+    return Math.floor(Math.random() * number);
+  };
+
+  const endGame = () => {
+    if (checkWin()) {
+      if (xTurn) {
+        winningMsg.textContent = `${displayController.oneDisplayName.textContent} WINS!`;
+        winningMsg.style.color = "var(--color-x-mark)";
+        displayController.endScreen.classList.add("show");
+      } else {
+        winningMsg.textContent = `${displayController.twoDisplayName.textContent} WINS!`;
+        winningMsg.style.color = "var(--color-o-mark)";
+        displayController.endScreen.classList.add("show");
+      }
+    } else if (checkDraw()) {
+      winningMsg.textContent = `GAME IS A DRAW`;
+      winningMsg.style.color = "var(--color-light)";
+      displayController.endScreen.classList.add("show");
+    } else {
+      swapTurn();
+      isAiTurn();
+      hoverMark();
     }
   };
 
