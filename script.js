@@ -185,14 +185,17 @@ const gameController = (() => {
     hoverMark();
   };
 
+  let result;
   const checkWin = () => {
     let winner = false;
+    result = null;
     for (let i = 0; i < WIN_CONDITION.length; i++) {
       const a = gameBoard.boardState[WIN_CONDITION[i][0]];
       const b = gameBoard.boardState[WIN_CONDITION[i][1]];
       const c = gameBoard.boardState[WIN_CONDITION[i][2]];
       if (a !== "" && b !== "" && c !== "" && a === b && b === c) {
         winner = true;
+        result = a;
       }
     }
     return winner;
@@ -209,25 +212,25 @@ const gameController = (() => {
       return;
     }
     if (!xTurn && playerTwo.ai) {
-      botMove();
-      gameBoard.getBoard();
+      bestMove();
       endGame();
     }
   };
+  // <-- AI plays RANDOM move -->
+  // const botMove = () => {
+  //   let available = [];
+  //   for (let i = 0; i < 9; i++) {
+  //     if (gameBoard.boardState[i] === "") {
+  //       available.push(i);
+  //     }
+  //   }
+  //   cellElements[available[randomNumber(available.length)]].classList.add("o");
+  // };
 
-  const botMove = () => {
-    let available = [];
-    for (let i = 0; i < 9; i++) {
-      if (gameBoard.boardState[i] === "") {
-        available.push(i);
-      }
-    }
-    cellElements[available[randomNumber(available.length)]].classList.add("o");
-  };
-
-  const randomNumber = (number) => {
-    return Math.floor(Math.random() * number);
-  };
+  // const randomNumber = (number) => {
+  //   return Math.floor(Math.random() * number);
+  // };
+  // <-- AI plays RANDOM move -->
 
   const endGame = () => {
     if (checkWin()) {
@@ -250,6 +253,69 @@ const gameController = (() => {
       hoverMark();
     }
   };
+
+  function bestMove() {
+    // find best Move for AI
+    let bestScore = -Infinity;
+    let move;
+    for (let i = 0; i < 9; i++) {
+      // Is the cell available?
+      if (gameBoard.boardState[i] === "") {
+        gameBoard.boardState[i] = "o";
+        let score = minimax(gameBoard.boardState, 0, false);
+        gameBoard.boardState[i] = "";
+        if (score > bestScore) {
+          bestScore = score;
+          move = i;
+        }
+      }
+    }
+    cellElements[move].classList.add("o");
+    gameBoard.getBoard();
+  }
+
+  let scores = {
+    x: -10,
+    o: 10,
+    tie: 0,
+  };
+
+  function minimax(board, depth, isMaximizing) {
+    let win = checkWin();
+    let draw = checkDraw();
+    if (win) {
+      return scores[result];
+    }
+    if (draw) {
+      return scores["tie"];
+    }
+
+    if (isMaximizing) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < 9; i++) {
+        // Is the cell available?
+        if (board[i] === "") {
+          board[i] = "o";
+          let score = minimax(board, depth + 1, false);
+          board[i] = "";
+          bestScore = Math.max(score, bestScore);
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < 9; i++) {
+        // Is the cell available?
+        if (board[i] === "") {
+          board[i] = "x";
+          let score = minimax(board, depth + 1, true);
+          board[i] = "";
+          bestScore = Math.min(score, bestScore);
+        }
+      }
+      return bestScore;
+    }
+  }
 
   return { startGame };
 })();

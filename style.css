@@ -204,6 +204,20 @@ button:hover {
   opacity: 0.9;
 }
 
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding-bottom: 2rem;
+  font-size: var(--fs-regular);
+  font-family: var(--ff-schoolbell);
+  color: var(--color-light);
+  text-shadow: 2px 2px var(--color-dark);
+  z-index: 99999;
+}
+
 .no-show {
   display: none;
 }
